@@ -1,5 +1,6 @@
 import React from 'react'
 import './inputField.css'
+import { useRef } from 'react';
 
 interface Props {
     todo: string;
@@ -8,10 +9,16 @@ interface Props {
 }
 
 const InputField = ({todo, setToDo, handleAdd}: Props) => {
+ 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   return (
-    <form className='input'>
-        <input type="input" value={todo} onChange={(e) => setToDo(e.target.value)} placeholder='Enter a task' className='input__box'/>
-        <button className='input__submit' type='submit' onSubmit={handleAdd}>Go</button>
+    <form className='input' onSubmit={(e) => {
+      handleAdd(e)
+      inputRef.current?.blur();
+    }}>
+        <input type="input" value={todo} ref={inputRef} onChange={(e) => setToDo(e.target.value)} placeholder='Enter a task' className='input__box'/>
+        <button className='input__submit' type='submit'>Go</button>
     </form>
   )
 }
